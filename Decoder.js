@@ -1,4 +1,10 @@
 
+// Wrapper for ChirpStack
+function Decode(port, bytes) {
+	//Simply call the TTN function with the parameters switched
+	return Decoder(bytes, port);
+}
+
 function byteToHex(b) {
     var hex = b.toString(16);
     return hex.length == 1 ? "0" + hex : hex;
@@ -8,7 +14,6 @@ function bytesToHex(bytes,offset,amount) {
     for(var i = offset + amount-1; i >= offset; i--){
     hexToReturn += byteToHex(bytes[i]);
     }
-    console.log(hexToReturn);
     return hexToReturn ;
 }
 function hexToDecimal(hexString) {
@@ -96,17 +101,16 @@ function decodeAxiomaExtended(bytes) {
 	return params;
 }
 
-function autoDecode(bytes, body) {
+function Decoder(bytes, body) {
 	if (body.port == 101) {
 		//Configuration frame
 		return {};
 	}	
     return decodeAxiomaExtended(bytes);
 }
-
 /*function testDecoder(){
     var test  = [0xb3,0x63,0xc3,0x63,0x00,0x20,0x3a,0x05,0x00,0x8f,0x21];
-    var obj = autoDecode(test,{});
+    var obj = Decoder(test,{});
     console.log("curentDate: " + obj.curentDate);
     console.log("statusCode: " + obj.statusCode);
     console.log("statusMessage: " + obj.statusMessage);
